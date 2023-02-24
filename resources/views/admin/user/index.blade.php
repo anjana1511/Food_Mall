@@ -100,19 +100,15 @@
                                                     age="{{$user->age}}"
                                                     class="view-data btn btn-sm btn-success">View</button>
                                             <a href="{{route('user.edit',$user->id)}}" class="btn btn-sm btn-dark">Edit</a>
-
-                                            <form id="delete-form-{{ $user->id }}" action="{{route('user.delete',$user->id)}}" method="put">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="deletePost({{ $user->id }})" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
+                                            
+                                            <button type="button" class="btn btn-sm btn-danger delete" data-id="{{ $user->id }}">Delete</button>
                                         </td>
                                     </tr>
 
                                 @endforeach
                                 </tbody>
                             </table>
-                            {{ $users->links() }}
+                            {{ $users->links('vendor.pagination.simple-bootstrap-4') }}
                         </div>
                     </div>
                 </div>
@@ -148,46 +144,6 @@
                     })
                 </script>
 
-                {{--sweetalert box for deleting start--}}
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.28.8/dist/sweetalert2.all.min.js"></script>
-
-                <script type="text/javascript">
-                    function deletePost(id)
-
-                    {
-                        const swalWithBootstrapButtons = swal.mixin({
-                            confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-danger',
-                            buttonsStyling: false,
-                        })
-
-                        swalWithBootstrapButtons({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Yes, delete it!',
-                            cancelButtonText: 'No, cancel!',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.value) {
-                                event.preventDefault();
-                                document.getElementById('delete-form-'+id).submit();
-                            } else if (
-                                // Read more about handling dismissals
-                                result.dismiss === swal.DismissReason.cancel
-                            ) {
-                                swalWithBootstrapButtons(
-                                    'Cancelled',
-                                    'Your file is safe :)',
-                                    'error'
-                                )
-                            }
-                        })
-                    }
-
-                </script>
-                {{--sweetalert box for deleting end--}}
 
                 <div id="show-data" class="modal fade" id="view-data" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -228,6 +184,58 @@
     </div>
     @endsection
     @section('js')
+    <script  type="application/javascript">
+   
+   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+   $(document).on("click",".delete", function()
+{
+    
+        var id=$(this).data(id);
+            swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+        },
+            function(isConfirm){
+            if (isConfirm) {
+                                
+                $.ajax({
+                url: "{{ route('user.delete') }}",
+                type: 'post',
+                data: {_token: CSRF_TOKEN,id: id},
+                success: function(response){
+                      console.log(data);
+                    swal({title: "Success", text: "State has been deleted!", type: "success"},
+                            function(){ 
+                                location.reload();
+                            }
+                        );
+                // swal("Deleted!", "Your imaginary file has been deleted.", "success");
+              
+                }
+            });
+                
+            } else {
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+            }
+
+            // location.reload();
+        });
+
+});
+    </script>
+
+
+
+
+    
     <script src="{{asset('admin-panel/assets/libs/flot/excanvas.js')}}"></script>
     <script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.js')}}"></script>
     <script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.pie.js')}}"></script>

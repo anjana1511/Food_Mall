@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use DB;
 
 class CategoryController extends Controller
 {
@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $category = Category::all();
+        $category = Category::select('*')->paginate(5);
         return view('admin.category.index',compact('category'));
     }
 
@@ -45,12 +45,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
         $category = new Category();
         $category -> cat_name = $request -> cat_name;
         $category -> cat_description = $request -> cat_description;
-        // $category -> status = $request -> status;
-        $category -> status ="Available";
+        $category -> status = $request -> status;
 
         if($request->hasfile('image'))
         {
@@ -67,10 +65,13 @@ class CategoryController extends Controller
               $category->image = '';
              }
             
-             $category -> save();
-             // return redirect()->route('user');
-             return redirect()->route('category')      
-             ->with('success','Product created successfully.');
+             $cat=$category -> save();
+             if($cat){
+            return redirect()->route('category')->with('success', 'Category created successfully.');
+            }
+            else{
+                return redirect()->route('category')->with('error', 'Category Not Created.');
+            }
     }
 
     /**
@@ -90,9 +91,13 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Request $request)
     {
         //
+        $inputArr=$request->all();
+        $category['catdata']=Category::where('cat_id','=',$inputArr['edit_id'])->first();
+        return response()->json($category);
+
     }
 
     /**
@@ -102,9 +107,40 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
-        //
+        
+        if($request->hasfile('eimage'))
+        {
+
+            $file = $request->file('eimage');
+            $extension = $file->getClientOriginalExtension();
+            $new_name = date( 'Y-m-d' ) . '-' . Str::random( 10 ) . '.' . $extension;
+            $file ->move(public_path('image/category'), $new_name);
+            $pic = $new_name;
+        }
+        else{
+          
+              $pic = '';
+             }
+             $updatedetails=[
+                'cat_name' => $request -> ecat_name,
+                'cat_description' => $request -> ecat_description,
+                'status' => $request -> estatus,
+                'image'  => $pic,
+           ];
+
+                $cat=DB::table('categories')
+                        ->where('cat_id', $request->get('edit_id'))
+                         ->update($updatedetails);
+          
+            if($cat){
+             return redirect()->route('category')->with('success', 'Category Updated successfully.');
+            }
+            else {
+                return redirect()->route('category')->with('error', 'Failed! Category not Updated');
+            }
+        
     }
 
     /**
@@ -113,8 +149,21 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
         //
+        $inputArr=$request->all();
+        $model = Category::where('cat_id','=',$inputArr['id']);   
+        $model->delete();
+
+        return response()->json($inputArr['id']);
+
+    }
+
+    public function search(Request $request){
+        
+        $category =Category::where('cat_name', 'LIKE',"%{$request->search}%")->get();
+        
+        return view('admin.category.index',compact('category'));
     }
 }

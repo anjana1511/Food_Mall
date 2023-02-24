@@ -179,12 +179,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
-        $user = User::find($id);
+        $inputArr=$request->all();
+        $user = User::where('id','=',$inputArr['id']);
         $user -> delete();
-        return redirect()->route('user');
+        return response()->json($inputArr['id']);
     }
 
     public function search(Request $request){

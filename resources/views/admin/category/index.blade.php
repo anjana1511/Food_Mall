@@ -3,7 +3,6 @@
 @section('content')
 
 <div class="page-wrapper">
-
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-12 d-flex no-block align-items-center">
@@ -26,7 +25,7 @@
     <div class="row">
         <div class="col-md-6">
                         <div class="card">
-                            <form class="form-horizontal" method="post" action="{{ route('category.store') }}" enctype="multipart/form-data">
+                           <form class="form-horizontal" method="post" action="{{ route('category.store') }}" enctype="multipart/form-data">
                             @csrf
                                <div class="card-body">
                                     <h4 class="card-title">Add New Category</h4>
@@ -51,9 +50,9 @@
                                     <div class="form-group row">
                                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Status</label>
                                         <div class="col-sm-9">
-                                             <select class="form-control">
+                                             <select class="form-control" id="status" name="status">
                                                  <option value="Available">Available</option>
-                                                 <option value="Not Vailable">Not Available</option>
+                                                 <option value="Not Available">Not Available</option>
                                              </select>
                                         </div>
                                     </div>
@@ -69,13 +68,13 @@
         </div> <!-- End md-6 -->
         <div class="col-md-6">
                         <div class="card">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" action="{{route('category.search')}}" method="GET">
                                 <div class="card-body">
                                     <h4 class="card-title">Search</h4>
                                     <div class="form-group row">
                                         <label for="fname" class="col-sm-3 text-right control-label col-form-label">Category Name</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="cat_name" placeholder="Category Name Here">
+                                            <input type="text" class="form-control" name="search" placeholder="Category Name Here">
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +102,7 @@
                                                 <th>Description</th>
                                                 <th>Image</th>
                                                 <th>Status</th>
-                                                <th colspan="2">Update/Delete</th>
+                                                 <th colspan="2">Update/Delete</th>
 
                                             </tr>
                                         </thead>
@@ -112,24 +111,81 @@
                                             <tr>
                                                 <td>{{ $item->cat_name }}</td>
                                                 <td>{{ $item->cat_description }}</td>
-                                                <td>{{ $item->cat_name }}</td>
+                                                <td><img src="{{ asset('image/category/').'/'. $item->image }}" width="80px" height="80px" alt="Image"> </td>
                                                 <td>{{ $item->status }}</td>
                                                 <td>
-                                                    <a href="" class="btn btn-sm btn-dark">Edit</a>
-                                                    <a href="" class="btn btn-sm btn-danger">Delete</a>
- 
+                                                <button type="button" class="btn btn-sm btn-dark update" data-toggle="modal" data-id="{{ $item->cat_id }}">
+                                                  Edit
+                                                 </button>
+
+                                                 <button type="button" class="btn btn-sm btn-danger delete" data-id="{{ $item->cat_id }}">Delete</button>
+                                                
                                             </tr>
                                             @endforeach
 
                                         </tbody>
                                     </table>
+                                    {{ $category->links('vendor.pagination.simple-bootstrap-4') }}
                                 </div>
 
                             </div>
                         </div>                          
         </div><!-- end col-12 -->
     </div><!-- End row -->
-    
+
+                                <!-- Modal -->
+                                <div id="dataModal" class="modal fade">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('category.update')}}" method="post" enctype="multipart/form-data">
+                                             {{ csrf_field() }}
+                                            <div class="modal-body">
+                                                <div class="form-group row">
+                                                    <label for="cat_name" class="col-sm-3 text-right control-label col-form-label">Category Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="hidden" id="edit_id" name="edit_id">
+                                                        <input type="text" class="form-control" id="ecat_name" name="ecat_name" placeholder="Category Name Here">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                     <label for="ecat_description" class="col-sm-3 text-right control-label col-form-label">Description</label>
+                                                     <div class="col-sm-9">
+                                                        <textarea class="form-control" id="ecat_description" name="ecat_description" placeholder="Description"></textarea>
+                                                     </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                     <label for="ecat_image" class="col-sm-3 text-right control-label col-form-label">Image</label>
+                                                     <div class="col-sm-9">
+                                                     <img id="ecat_photo" src="" width="80px" height="80px" alt="Image">
+                                                     <input type="file" class="form-control" id="eimage" name="eimage" placeholder="Category Image Here">
+                                                     </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Status</label>
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control" name="estatus" id="estatus">
+                                                            <option value="Available">Available</option>
+                                                            <option value="Not Available">Not Available</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                         </form>
+                                        </div>
+                                    </div>
+                                </div>
+
 
 </div> <!-- End Container fluid  -->
 
@@ -143,27 +199,74 @@
 
 @section('js')
 
-<script src="{{asset('admin-panel/assets/libs/flot/excanvas.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.pie.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.time.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.stack.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot/jquery.flot.crosshair.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js')}}"></script>
-<script src="{{asset('admin-panel/dist/js/pages/chart/chart-page-init.js')}}"></script>
+<script  type="application/javascript">
+   
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    
+        $(document).on("click", ".update" , function() {
+    var edit_id = $(this).data('id');
 
-<script src="{{asset('admin-panel/assets/libs/jquery/dist/jquery.min.js')}}"></script>
-<script src="{{asset('admin-panel/dist/js/jquery-ui.min.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('admin-panel/dist/js/custom.min.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/moment/min/moment.min.js')}}"></script>
-<script src="{{asset('admin-panel/assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
-<script src="{{asset('admin-panel/dist/js/pages/calendar/cal-init.js')}}"></script>
-<script src="{{asset('admin-panel/assets/extra-libs/DataTables/datatables.min.js')}}"></script>
-<script>
-        /****************************************
-         *       Basic Table                   *
-         ****************************************/
-        $('#zero_config').DataTable();
+  $.ajax({
+    url: "{{ route('category.edit') }}",
+    type: 'get',
+    data: {_token: CSRF_TOKEN,edit_id: edit_id},
+    success: function(data){
+        console.log(data);
+
+        $('#edit_id').val(data.catdata.cat_id);
+        $('#ecat_name').val(data.catdata.cat_name);  
+        $('#ecat_description').html(data.catdata.cat_description);
+        $('#ecat_photo').attr("src","{{asset('image/category/')}}"+'/'+data.catdata.image);
+        // $('#estatus').html(data.catdata.status);
+        $('#dataModal').modal('show'); 
+   
+    }
+  });
+
+});
+
+$(document).on("click",".delete", function()
+{
+    
+        var id=$(this).data(id);
+            swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+        },
+            function(isConfirm){
+            if (isConfirm) {
+                                
+                $.ajax({
+                url: "{{ route('category.delete') }}",
+                type: 'post',
+                data: {_token: CSRF_TOKEN,id: id},
+                success: function(response){
+                    //  console.log(data);
+                    swal({title: "Success", text: "State has been deleted!", type: "success"},
+                            function(){ 
+                                location.reload();
+                            }
+                        );
+                // swal("Deleted!", "Your imaginary file has been deleted.", "success");
+              
+                }
+            });
+                
+            } else {
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+            }
+
+            // location.reload();
+        });
+
+});
     </script>
+    
 @endsection
