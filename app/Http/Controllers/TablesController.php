@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Tables;
 use Illuminate\Http\Request;
+use DB;
 
 class TablesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +20,9 @@ class TablesController extends Controller
     public function index()
     {
         //
+        $data = Tables::select('*')->paginate(5);
+        return view('admin.tables.index',compact('data'));
+
     }
 
     /**
@@ -36,6 +44,18 @@ class TablesController extends Controller
     public function store(Request $request)
     {
         //
+        $tables = new Tables();
+        $tables -> table_name = $request -> table_name;
+        $tables->size=$request ->size;
+        $tables -> status = $request -> status;
+
+        $data=$tables -> save();
+        if($data){
+       return redirect()->route('tables')->with('success', 'Table created successfully.');
+       }
+       else{
+           return redirect()->route('tables')->with('error', 'Table Not Created.');
+       }
     }
 
     /**
@@ -55,9 +75,12 @@ class TablesController extends Controller
      * @param  \App\Models\Tables  $tables
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tables $tables)
+    public function edit(Request $request)
     {
         //
+        $inputArr=$request->all();
+        $table['tabledata']=Tables::where('table_id','=',$inputArr['edit_id'])->first();
+        return response()->json($table);
     }
 
     /**
@@ -70,6 +93,22 @@ class TablesController extends Controller
     public function update(Request $request, Tables $tables)
     {
         //
+        $updatedetails=[
+            'table_name' => $request ->etable_name,
+            'size' => $request -> esize,
+            'status' => $request -> estatus,
+             ];
+
+            $cat=DB::table('tables')
+                    ->where('table_id', $request->get('edit_id'))
+                     ->update($updatedetails);
+      
+        if($cat){
+         return redirect()->route('tables')->with('success', 'Table Updated successfully.');
+        }
+        else {
+            return redirect()->route('tables')->with('error', 'Failed! Table not Updated');
+        }
     }
 
     /**
@@ -78,8 +117,19 @@ class TablesController extends Controller
      * @param  \App\Models\Tables  $tables
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tables $tables)
+    public function destroy(Request $request)
     {
         //
+        $inputArr=$request->all();
+        $model = Tables::where('table_id','=',$inputArr['id']);   
+        $model->delete();
+
+        return response()->json($inputArr['id']);
+    }
+    public function search(Request $request){
+
+        $data =Tables::where('table_name', 'LIKE',"%{$request->search}%")->paginate(5);
+               
+        return view('admin.tables.index',compact('data'));
     }
 }

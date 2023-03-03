@@ -32,8 +32,13 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('user/delete',[App\Http\Controllers\UserController::class,'destroy'])->name('user.delete');
     Route::get('user/search',[App\Http\Controllers\UserController::class,'search'])->name('user.search');
     
-
+    //Food Controller
     Route::get('food',[App\Http\Controllers\FoodController::class, 'index'])->name('food');
+    Route::post('user/food',[App\Http\Controllers\FoodController::class,'store'])->name('food.store');
+    Route::get('user/food/edit',[App\Http\Controllers\FoodController::class,'edit'])->name('food.edit');
+    Route::post('user/food/update',[App\Http\Controllers\FoodController::class,'update'])->name('food.update');
+    Route::post('user/food/delete',[App\Http\Controllers\FoodController::class,'destroy'])->name('food.delete');
+    Route::get('user/food/search',[App\Http\Controllers\FoodController::class,'search'])->name('food.search');
 
     //Category Controller
     Route::get('category',[App\Http\Controllers\CategoryController::class, 'index'])->name('category');
@@ -42,6 +47,20 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('user/category/update',[App\Http\Controllers\CategoryController::class,'update'])->name('category.update');
     Route::post('user/category/delete',[App\Http\Controllers\CategoryController::class,'destroy'])->name('category.delete');
     Route::get('user/category/search',[App\Http\Controllers\CategoryController::class,'search'])->name('category.search');
+
+    //Tables Controller
+
+    Route::get('tables',[App\Http\Controllers\TablesController::class,'index'])->name('tables');
+    Route::post('user/tables',[App\Http\Controllers\TablesController::class,'store'])->name('tables.store');
+    Route::get('user/tables/edit',[App\Http\Controllers\TablesController::class,'edit'])->name('tables.edit');
+    Route::post('user/tables/update',[App\Http\Controllers\TablesController::class,'update'])->name('tables.update');
+    Route::post('user/tables/delete',[App\Http\Controllers\TablesController::class,'destroy'])->name('tables.delete');
+    Route::get('user/tables/search',[App\Http\Controllers\TablesController::class,'search'])->name('tables.search');
+    
+     //Menu Controller
+    Route::get('menu',[App\Http\Controllers\TablesController::class,'index'])->name('menu');
+
+
 });
 
 

@@ -15,8 +15,8 @@
                                 <li class="sidebar-item"><a href="{{ route('category') }}" class="sidebar-link"><i class="mdi mdi-food-variant"></i><span class="hide-menu"> Category </span></a></li>
                             </ul>
                         </li> 
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-library-books"></i><span class="hide-menu">Manage Menu</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Manage Tables</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('menu') }}" aria-expanded="false"><i class="mdi mdi-library-books"></i><span class="hide-menu">Manage Menu</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('tables') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Manage Tables</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

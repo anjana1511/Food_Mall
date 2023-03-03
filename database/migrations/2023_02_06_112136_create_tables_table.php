@@ -17,7 +17,6 @@ class CreateTablesTable extends Migration
             $table->increments('table_id');
             $table->string('table_name');
             $table->string('size');
-            $table->string('food_description');
             $table->string('status');
             $table->timestamps();
 
