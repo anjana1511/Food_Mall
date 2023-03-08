@@ -58,8 +58,18 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('user/tables/search',[App\Http\Controllers\TablesController::class,'search'])->name('tables.search');
     
      //Menu Controller
-    Route::get('menu',[App\Http\Controllers\TablesController::class,'index'])->name('menu');
+    Route::get('menu',[App\Http\Controllers\MenuController::class,'index'])->name('menu');
+    Route::get('user/getfood/{id}',[App\Http\Controllers\FoodController::class,'show'])->name('getfood');
 
+    Route::post('user/menu',[App\Http\Controllers\MenuController::class,'store'])->name('menu.store');
+    Route::get('user/menu/edit',[App\Http\Controllers\MenuController::class,'edit'])->name('menu.edit');
+    Route::post('user/menu/update',[App\Http\Controllers\MenuController::class,'update'])->name('menu.update');
+    Route::post('user/menu/delete',[App\Http\Controllers\MenuController::class,'destroy'])->name('menu.delete');
+    Route::get('user/menu/search',[App\Http\Controllers\MenuController::class,'search'])->name('menu.search');
+
+    Route::get('user/menu_item/{id}',[App\Http\Controllers\MenuController::class,'create'])->name('menu.additem');
+    Route::post('user/menu_item',[App\Http\Controllers\MenuController::class,'store_item'])->name('menu.store_item');
+    Route::post('user/menu_item/delete',[App\Http\Controllers\MenuController::class,'destroy_item'])->name('menu.delete_item');
 
 });
 

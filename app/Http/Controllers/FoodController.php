@@ -87,9 +87,11 @@ class FoodController extends Controller
      * @param  \App\Models\Food  $food
      * @return \Illuminate\Http\Response
      */
-    public function show(Food $food)
+    public function show($id)
     {
         //
+        $cfdata=Food::where("cat_id","=",$id)->pluck("food_name","food_id");
+        return json_encode($cfdata);
     }
 
     /**

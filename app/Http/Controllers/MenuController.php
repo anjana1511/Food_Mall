@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Category;
+use App\Models\Food;
+use App\Models\Menu_Item;
 use Illuminate\Http\Request;
+use DB;
 
 class MenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +23,10 @@ class MenuController extends Controller
     public function index()
     {
         //
+        $category=Category::where('status','=','Available')->get();
+        $food=Food::where('status','=','Available')->get();
+        $data=Menu::select('*')->paginate(5);
+        return view('admin.menu.index',compact('data','category','food'));
     }
 
     /**
@@ -22,9 +34,42 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
+        //Add menu Item Page
+        $category=Category::where('status','=','Available')->get();
+        $food=Food::where('status','=','Available')->get();
+        $data=Menu::where('menu_id','=',$id)->first();
+        $items=DB::table('menu_item')
+                    ->join('menu','menu.menu_id','=','menu_item.menu_id')
+                    ->join('foods','foods.food_id','=','menu_item.food_id')
+                    ->join('categories','categories.cat_id','=','menu_item.cat_id')
+                    ->where('menu_item.menu_id','=',$id)
+                    ->paginate(5);
+        
+        return view('admin.menu.item',compact('items','data','category','food'));
+    }
+    public function store_item(Request $request)
+    {
+
+         $inputArr=$request->all();
+         $data=[
+
+                'menu_id' => $inputArr['menu_name'],
+                'cat_id'  => $inputArr['cat_name'],
+                'food_id' => $inputArr['food_name'],
+
+         ];
+         $savedata=Menu_Item::create($data);
+         if($savedata)
+         {
+            return redirect()->back()->with('success','Item Add Successfully');
+         }
+         else
+         {
+            return redirect()->back()->with('error','Failed Item Not Add');
+         }
     }
 
     /**
@@ -36,6 +81,24 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         //
+        $inputArr=$request->all();
+        
+        $data=[
+            'menu_name' => $inputArr['menu_name'],
+            'status' => $inputArr['status'],
+             ];
+        
+             $dat=Menu::create($data);
+
+        if($dat)
+        {
+            return redirect()->route('menu')->with('success', 'Menu created successfully.');
+            }
+            else{
+                return redirect()->route('menu')->with('error', 'Menu Not Created.');
+            }
+
+
     }
 
     /**
@@ -55,9 +118,28 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit(Request $request)
     {
         //
+        $inputArr=$request->all();
+
+        if($inputArr['data_act'] == 'menu_up'){
+
+            //Menu Update
+        $menu['menudata']=Menu::where('menu_id','=',$inputArr['edit_id'])->first();
+        return response()->json($menu);
+        }
+        else 
+        {
+            //Menu Item Update
+            $menu['menudata']=DB::table('menu_item')
+            ->join('menu','menu.menu_id','=','menu_item.menu_id')
+            ->join('foods','foods.food_id','=','menu_item.food_id')
+            ->join('categories','categories.cat_id','=','menu_item.cat_id')
+            ->where('menu_item.item_id','=',$inputArr['edit_id'])
+            ->first();
+            return response()->json($menu);
+        }
     }
 
     /**
@@ -67,9 +149,44 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request)
     {
-        //
+        $inputArr=$request->all();
+       
+        switch ($request->input('action')) {
+            case 'menu':
+                        $updatedata=[
+                            'menu_name' => $inputArr['emenu_name'],
+                            'status' => $inputArr['estatus'],
+                        ];
+                        $up=Menu::where('menu_id','=',$inputArr['edit_id'])->update($updatedata);
+
+                        if($up){
+                            return redirect()->route('menu')->with('success', 'Menu Updated successfully.');
+                        }
+                        else {
+                            return redirect()->route('menu')->with('error', 'Failed! Menu not Updated');
+                        }
+                break;
+            case 'menu_item'  :
+
+                    $updatedata=[
+                            'menu_id' => $inputArr['emenu_id'],
+                            'cat_id'  => $inputArr['cat_name'],
+                            'food_id' => $inputArr['food_name'],
+                            'status'  => $inputArr['estatus'],
+                    ];
+                        $up=Menu_Item::where('item_id','=',$inputArr['edit_id'])->update($updatedata);
+                               if($up){
+                                    return redirect()->back()->with('success', 'Menu Item Updated successfully.');
+                                }
+                                
+                                else{
+                                    return redirect()->back()->with('error', 'Menu Not Updated.');
+                                }
+                break;  
+            }
+
     }
 
     /**
@@ -78,8 +195,24 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Menu $menu)
+    public function destroy(Request $request)
     {
         //
+        $inputArr=$request->all();
+        $model=Menu::where('menu_id','=',$inputArr['id'])->delete();
+        return response()->json($inputArr['id']);
+    }
+    public function destroy_item(Request $request)
+    {
+        $inputArr=$request->all();
+        $model=Menu_Item::where('item_id','=',$inputArr['id'])->delete();
+        return response()->json($inputArr['id']);
+    }
+
+    public function search(Request $request){
+
+        $data =Menu::where('menu_name', 'LIKE',"%{$request->search}%")->paginate(5);
+               
+        return view('admin.menu.index',compact('data'));
     }
 }
