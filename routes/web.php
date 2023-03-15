@@ -60,6 +60,9 @@ Route::group(['middleware' => 'auth'], function (){
      //Menu Controller
     Route::get('menu',[App\Http\Controllers\MenuController::class,'index'])->name('menu');
     Route::get('user/getfood/{id}',[App\Http\Controllers\FoodController::class,'show'])->name('getfood');
+    Route::get('user/getitem/{id}',[App\Http\Controllers\MenuController::class,'show'])->name('getitem');
+    Route::get('user/showfood/{id}',[App\Http\Controllers\FoodController::class,'show_food'])->name('show_food');
+
 
     Route::post('user/menu',[App\Http\Controllers\MenuController::class,'store'])->name('menu.store');
     Route::get('user/menu/edit',[App\Http\Controllers\MenuController::class,'edit'])->name('menu.edit');
@@ -70,10 +73,17 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('user/menu_item/{id}',[App\Http\Controllers\MenuController::class,'create'])->name('menu.additem');
     Route::post('user/menu_item',[App\Http\Controllers\MenuController::class,'store_item'])->name('menu.store_item');
     Route::post('user/menu_item/delete',[App\Http\Controllers\MenuController::class,'destroy_item'])->name('menu.delete_item');
+    
+    
+    // CashierController
+    Route::get('/home', [App\Http\Controllers\CashierController::class, 'index'])->name('home');
+    
+    //add_to_cart
+    Route::post('/home/add_to_cart',[App\Http\Controllers\CashierController::class,'add_to_cart'])->name('add_to_cart');
 
 });
 
 
 Auth::routes();
 //Route::get('admin/home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

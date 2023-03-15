@@ -33,12 +33,18 @@
                                         <label for="cat_name" class="col-sm-3 text-right control-label col-form-label">Category Name</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" id="cat_name" name="cat_name" placeholder="Category Name Here">
+                                            @if ($errors->has('cat_name'))
+                                                <span class="text-danger">{{ $errors->first('cat_name') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Description</label>
                                         <div class="col-sm-9">
                                             <textarea class="form-control" id="cat_description" name="cat_description"></textarea>
+                                            @if ($errors->has('cat_description'))
+                                                <span class="text-danger">{{ $errors->first('cat_description') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -151,13 +157,19 @@
                                                     <div class="col-sm-9">
                                                         <input type="hidden" id="edit_id" name="edit_id">
                                                         <input type="text" class="form-control" id="ecat_name" name="ecat_name" placeholder="Category Name Here">
+                                                        @if ($errors->has('ecat_name'))
+                                                        <span class="text-danger">{{ $errors->first('ecat_name') }}</span>
+                                                    @endif
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                      <label for="ecat_description" class="col-sm-3 text-right control-label col-form-label">Description</label>
                                                      <div class="col-sm-9">
                                                         <textarea class="form-control" id="ecat_description" name="ecat_description" placeholder="Description"></textarea>
-                                                     </div>
+                                                        @if ($errors->has('ecat_description'))
+                                                            <span class="text-danger">{{ $errors->first('ecat_description') }}</span>
+                                                        @endif 
+                                                    </div>
                                                 </div>
                                                 <div class="form-group row">
                                                      <label for="ecat_image" class="col-sm-3 text-right control-label col-form-label">Image</label>
@@ -198,7 +210,6 @@
 @endsection
 
 @section('js')
-
 <script  type="application/javascript">
    
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');

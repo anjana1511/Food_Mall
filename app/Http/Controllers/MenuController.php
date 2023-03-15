@@ -107,8 +107,18 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show(Menu $menu)
+    public function show($id)
     {
+        
+        $cfdata = DB::table('menu_item')
+        ->join('menu','menu.menu_id','=','menu_item.menu_id')
+        ->join('foods','foods.food_id','=','menu_item.food_id')
+        ->join('categories','categories.cat_id','=','menu_item.cat_id')
+        ->select('*')
+        ->where('menu_item.menu_id','=',$id)
+        ->get();
+
+        return json_encode($cfdata);
         //
     }
 
@@ -211,8 +221,9 @@ class MenuController extends Controller
 
     public function search(Request $request){
 
-        $data =Menu::where('menu_name', 'LIKE',"%{$request->search}%")->paginate(5);
-               
+     $data =Menu::where('menu_name', 'LIKE',"%{$request->search}%")->paginate(5);
+       
         return view('admin.menu.index',compact('data'));
+    
     }
 }

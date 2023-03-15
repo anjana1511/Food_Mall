@@ -45,6 +45,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $request -> validate([
+            'cat_name' => 'required',
+            'cat_description' => 'required',
+        ],[
+             'cat_name.required' => 'Category Name is Required',
+             'cat_description.required' => 'Description is Required'
+        ]);      
+
         $category = new Category();
         $category -> cat_name = $request -> cat_name;
         $category -> cat_description = $request -> cat_description;
@@ -110,6 +118,13 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         
+        $request -> validate([
+            'ecat_name' => 'required',
+            'ecat_description' => 'required',
+        ],[
+             'ecat_name.required' => 'Category Name is Required',
+             'ecat_description.required' => 'Description is Required'
+        ]);
         if($request->hasfile('eimage'))
         {
 

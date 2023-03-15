@@ -76,19 +76,19 @@
         </div> <!-- End md-6 -->
                 <div class="col-md-6">
                         <div class="card">
-                            <form class="form-horizontal" action="{{route('food.search')}}" method="GET">
+                            <form class="form-horizontal" action="{{route('menu.search')}}" method="GET">
                                 <div class="card-body">
                                     <h4 class="card-title">Search</h4>
                                     <div class="form-group row">
-                                        <label for="fname" class="col-sm-3 text-right control-label col-form-label">Food Name</label>
+                                        <label for="fname" class="col-sm-3 text-right control-label col-form-label">Menu Name</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="search" placeholder="Food Name Here">
+                                            <input type="text" class="form-control" name="search" placeholder="Menu Name Here">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="border-top">
                                     <div class="card-body">
-                                    <button type="submit" class="btn btn-success">Search</button>
+                                    <button type="submit" class="btn btn-success" >Search</button>
                                         <a href="{{route('category')}}" class="btn btn-md btn-danger">Clear</a>
                                     </div>
                                 </div>
@@ -258,11 +258,12 @@ jQuery(document).ready(function ()
                      dataType : "json",
                      success:function(data)
                      {
-                        console.log(data);
+                        
                         jQuery('select[name="food_name"]').empty();
                         jQuery.each(data, function(key,value){
                            $('select[name="food_name"]').append('<option value="'+ key +'">'+ value +'</option>');
                         });
+                    
                      }
                   });
                }

@@ -91,8 +91,21 @@ class FoodController extends Controller
     {
         //
         $cfdata=Food::where("cat_id","=",$id)->pluck("food_name","food_id");
+       
         return json_encode($cfdata);
     }
+
+    public function show_food($id)
+    {
+        //
+        $cfdata=Food::join('categories','categories.cat_id','=','foods.cat_id')->where("foods.cat_id","=",$id)
+        ->select('foods.food_name','foods.food_id','foods.cat_id','foods.price','categories.cat_name')
+        ->get();
+             
+
+        return json_encode($cfdata);
+    }
+
 
     /**
      * Show the form for editing the specified resource.

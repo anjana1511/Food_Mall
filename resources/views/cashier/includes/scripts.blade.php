@@ -29,13 +29,8 @@
                swal(" {{ session()->get('success') }}", "You clicked the button!", "success")
                              
             @endif
-
-            @if(Session::has('"statusCode"=>200'))
-           swal(" {{ session()->get('success') }}", "You clicked the button!", "success")
-          @endif
         });
 
-                
     </script>
 
 
