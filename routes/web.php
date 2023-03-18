@@ -81,6 +81,13 @@ Route::group(['middleware' => 'auth'], function (){
     //add_to_cart
     Route::post('/home/add_to_cart',[App\Http\Controllers\CashierController::class,'add_to_cart'])->name('add_to_cart');
 
+    //CustomerController
+    Route::get('/home/customer',[App\Http\Controllers\CustomerController::class,'index'])->name('customer');
+    Route::post('/home/customer/store',[App\Http\Controllers\CustomerController::class,'store'])->name('customer.store');
+    Route::get('/home/customer/edit',[App\Http\Controllers\CustomerController::class,'edit'])->name('customer.edit');
+    Route::post('/home/customer/update',[App\Http\Controllers\CustomerController::class,'update'])->name('customer.update');
+    Route::post('/home/customer/delete',[App\Http\Controllers\CustomerController::class,'destroy'])->name('customer.delete');
+    Route::get('/home/customer/search',[App\Http\Controllers\CustomerController::class,'search'])->name('customer.search');
 });
 
 

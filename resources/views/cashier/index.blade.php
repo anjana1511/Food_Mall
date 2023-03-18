@@ -44,6 +44,9 @@
                         <div class="border-top">
                                     <div class="card-body">
                                         <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                        <button type="button" class="btn btn-sm btn-dark update" data-toggle="modal">
+                                                  Edit
+                                                 </button>
                                     </div>
                                  </form>   
                         </div> <!-- end border-top -->
@@ -119,6 +122,7 @@
                     </div>
                 </div>
             </div>
+            @include('cashier.customer.create')
 
         </div>
 
@@ -298,6 +302,21 @@
                             }
                         );
 
+   
+    }
+  });
+
+});
+
+
+
+
+$(document).on("click", ".update" , function() {
+  $.ajax({
+    type: 'get',
+    data: {_token: CSRF_TOKEN},
+    success: function(data){
+        $('#dataModal').modal('show'); 
    
     }
   });
