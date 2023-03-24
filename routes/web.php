@@ -80,6 +80,9 @@ Route::group(['middleware' => 'auth'], function (){
     
     //add_to_cart
     Route::post('/home/add_to_cart',[App\Http\Controllers\CashierController::class,'add_to_cart'])->name('add_to_cart');
+    Route::get('/home/move_to_cart',[App\Http\Controllers\CashierController::class,'move_to_cart'])->name('move_to_cart');
+    Route::post('/home/order_confim',[App\Http\Controllers\CashierController::class,'order_confim'])->name('order');
+    Route::get('/home/all_order',[App\Http\Controllers\CashierController::class,'show'])->name('orders');
 
     //CustomerController
     Route::get('/home/customer',[App\Http\Controllers\CustomerController::class,'index'])->name('customer');

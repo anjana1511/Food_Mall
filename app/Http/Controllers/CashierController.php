@@ -5,6 +5,7 @@ use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Food;
 use App\Models\Menu_Item;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use DB;
 class CashierController extends Controller
@@ -40,7 +41,7 @@ class CashierController extends Controller
         // dd($request->all());
         if(isset($request->menu_id) && $request->menu_id != '0')
         {
-             // dd($request->menu_id);
+            // dd($request->menu_id);
             $menu_Item=Menu::join('menu_item','menu_item.menu_id','=','menu.menu_id')
             ->join('foods','foods.food_id','=','menu_item.food_id')
             ->where('menu_item.menu_id','=',$request->menu_id)
@@ -101,9 +102,22 @@ class CashierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function move_to_cart()
     {
         //
+        $summ=DB::table('orderdetails')
+        ->select('*',DB::raw('SUM(quantity) as tqty,SUM(quantity*amount) as tamount'))
+        ->where('order_id','=','0')
+        ->get();
+        
+        $order_detail=DB::table('orderdetails')
+              ->join('foods','foods.food_id','=','orderdetails.food_id')
+              ->where('orderdetails.order_id','=','0')
+              ->get();
+
+
+              $cust = Customer::select('*')->get();
+        return view('cashier.cart',compact('order_detail','summ','cust'));
     }
 
     /**
@@ -112,9 +126,37 @@ class CashierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function order_confim(Request $request)
     {
         //
+        // dd($request->all());
+        $order_data=[
+               'customer_id' => $request->cust_id,
+               'total_amount' => $request->tamount,
+               'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ];
+        $order=DB::table('order')->insert($order_data);
+
+        if($order)
+        {
+            // dd('yes');
+            // select MAX(BillId) as BillId from tblBillMaster
+            $order_detail=DB::table('order')
+            ->select('order_id',DB::raw('MAX(order_id) as order_id'))
+            ->first();
+
+            $order_id=$order_detail->order_id;
+
+            $up=DB::table('orderdetails')
+            ->where('order_id','=','0')
+            ->update(['order_id' => $order_id]);
+            return redirect()->route('home')->with('success', 'Menu Item Updated successfully.');
+        }
+        else
+        {
+            return redirect()->back()->with('error', 'Something was Wrong.');
+        }
+
     }
 
     /**
@@ -123,9 +165,19 @@ class CashierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         //
+        $orders=DB::table('order')
+                 ->join('customers',function($join){
+                    $join->on('customers.cust_id','=','order.customer_id');
+                 })->leftJoin('orderdetails',function($join){
+                    $join->on('orderdetails.order_id','=','order.order_id');
+                 })
+                 ->groupBy('order.order_id')
+                 ->get();
+                //  dd($orders);
+                 return view('cashier.order.all_orders',compact('orders'));
     }
 
     /**

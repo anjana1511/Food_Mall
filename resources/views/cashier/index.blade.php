@@ -11,7 +11,7 @@
                     <div class="ml-auto text-right">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                             </ol>
                         </nav>
@@ -44,9 +44,7 @@
                         <div class="border-top">
                                     <div class="card-body">
                                         <button type="submit" class="btn btn-primary">Add to Cart</button>
-                                        <button type="button" class="btn btn-sm btn-dark update" data-toggle="modal">
-                                                  Edit
-                                                 </button>
+                           
                                     </div>
                                  </form>   
                         </div> <!-- end border-top -->
@@ -85,7 +83,7 @@
                     <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">All Menu Items
-                                <a href="" class="badge badge-pill badge-primary float-right">Go to Cart</a></h4>
+                                <a href="{{ route('move_to_cart') }}" class="badge badge-pill badge-primary float-right">Go to Cart</a></h4>
                                 <div class="table-responsive">
                                     <table id="menu_table" class="table table-striped table-bordered">
                                         <thead>
@@ -122,8 +120,6 @@
                     </div>
                 </div>
             </div>
-            @include('cashier.customer.create')
-
         </div>
 
         <footer class="footer text-center">
@@ -302,21 +298,6 @@
                             }
                         );
 
-   
-    }
-  });
-
-});
-
-
-
-
-$(document).on("click", ".update" , function() {
-  $.ajax({
-    type: 'get',
-    data: {_token: CSRF_TOKEN},
-    success: function(data){
-        $('#dataModal').modal('show'); 
    
     }
   });
