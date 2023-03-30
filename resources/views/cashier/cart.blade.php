@@ -84,28 +84,43 @@
                                         <table id="menu_table" class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center">S.N</th>
                                                     <th style="text-align: center">Food Name</th>
-
-                                                    <th style="text-align: center">Price</th>
+                                                    <th style="text-align: center">Unit Price</th>
                                                     <th style="text-align: center">Quantity</th>
+                                                    <th style="text-align: center">Total Price</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             @foreach($order_detail as $item)
                                                   <tr>
-                                                    <td>{{ $item->food_name }}</td>
-                                                    <td>{{ $item->amount }}</td>
+                                                  <th>{{$loop->index+1}}</th>
+                                                    <td>
+                                                        @if($item->food_name != null)
+                                                        {{ $item->food_name }}
+                                                        @else
+                                                        {{ $item->menu_name }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                    @if($item->price != null)
+                                                        {{ $item->price }}
+                                                        @else
+                                                        {{ $item->menu_price }}
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $item->quantity }}</td>
+                                                    <td>{{ $item->amount }}</td>                                                    
                                                  </tr>
                                             @endforeach
                                             @foreach($summ as $it)
                                                   
                                                   <tr>
  
-                                                  <td colspan="2" align="right"><b>Total Quantity:-</td>
+                                                  <td colspan="4" align="right"><b>Total Quantity:-</td>
                                                   <td>{{ $it->tqty }}</b></td></tr>
                                                   <tr>
-                                                  <td colspan="2" align="right"><b>Total Amount:-</td>
+                                                  <td colspan="4" align="right"><b>Total Amount:-</td>
                                                   <td>{{ $it->tamount }}</b></td></tr>
                                             @endforeach       
                                             </tbody>

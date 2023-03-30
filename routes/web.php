@@ -83,6 +83,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/home/move_to_cart',[App\Http\Controllers\CashierController::class,'move_to_cart'])->name('move_to_cart');
     Route::post('/home/order_confim',[App\Http\Controllers\CashierController::class,'order_confim'])->name('order');
     Route::get('/home/all_order',[App\Http\Controllers\CashierController::class,'show'])->name('orders');
+    Route::get('/home/order/get_by_id',[App\Http\Controllers\CashierController::class,'get_by_id'])->name('order.get_by_id');
+    Route::post('/home/changestatus',[App\Http\Controllers\CashierController::class,'changestatus'])->name('order.changestatus');
+
+    Route::get('/home/order/invoice/show/{id}',[App\Http\Controllers\CashierController::class,'invoice_details_show'])->name('order.invoice_details_show');
+
 
     //CustomerController
     Route::get('/home/customer',[App\Http\Controllers\CustomerController::class,'index'])->name('customer');

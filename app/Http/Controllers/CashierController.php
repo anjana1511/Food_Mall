@@ -41,13 +41,6 @@ class CashierController extends Controller
         // dd($request->all());
         if(isset($request->menu_id) && $request->menu_id != '0')
         {
-            // dd($request->menu_id);
-            $menu_Item=Menu::join('menu_item','menu_item.menu_id','=','menu.menu_id')
-            ->join('foods','foods.food_id','=','menu_item.food_id')
-            ->where('menu_item.menu_id','=',$request->menu_id)
-            ->select('menu_item.menu_id','menu_item.food_id','menu_item.cat_id','foods.price')
-            ->get();
-              
             if(!isset($request->quantity))
             {
                $quantity='1';
@@ -55,20 +48,39 @@ class CashierController extends Controller
                $quantity=$request->quantity;
             }
 
-            $len=count($menu_Item);
-            // dd($len);
-            for($i=0; $i<$len; $i++)
-            {
-                $data=[
-                    'food_id'=>$menu_Item[$i]['food_id'],
-                    'menu_id'=>$request->menu_id,
-                    'amount' =>$menu_Item[$i]['price'],
-                    'quantity'=>$quantity,
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-             ];
+            $menu_price_details=Menu::select('menu_price')
+            ->where('menu_id','=',$request->menu_id)
+            ->first();
+            $menu_price=$menu_price_details->menu_price;
+            $Qprice=$menu_price*$quantity;
+            
+            $menu_exist=DB::table('orderdetails')
+            ->where('order_id','=','0')
+            ->where('menu_id','=',$request->menu_id)
+            ->first();
+             if($menu_exist == null)
+               {
+            $data=[
+                'food_id' => '0',
+                'menu_id'=>$request->menu_id,
+                'amount' =>$Qprice,
+                'quantity'=>$quantity,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ];
                 $store=DB::table('orderdetails')->insert($data);
-             
-            }
+              }
+              else
+              {
+                $exqty=$menu_exist->quantity + $quantity;
+                $exprice=$exqty *$menu_price;
+                
+
+                $store=DB::table('orderdetails')
+                ->where('order_id','=','0')
+                ->where('menu_id','=',$request->menu_id)
+                ->update(['quantity'=> $exqty,'amount'=>$exprice]);
+              }
+
         }
         else{
             if(!isset($request->qty))
@@ -77,14 +89,33 @@ class CashierController extends Controller
              }else{
                 $qty=$request->qty;
              }
+
+             $food_exist=DB::table('orderdetails')
+             ->where('order_id','=','0')
+             ->where('food_id','=',$request->edit_id)
+             ->first();
+             if($food_exist == null)
+             {
+             $Qprice=$request->amount * $qty;
                 $data=[
                 'food_id' => $request->edit_id,
-                'amount' =>$request->amount,
+                'amount' =>$Qprice,
                 'quantity'=>$qty,
                 'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
                 ];
 
                 $store=DB::table('orderdetails')->insert($data);
+            }
+            else
+            {
+                $exqty=$food_exist->quantity + $qty;
+                $exprice=$exqty * $request->amount;
+
+                $store=DB::table('orderdetails')
+                ->where('order_id','=','0')
+                ->where('food_id','=',$request->edit_id)
+                ->update(['quantity'=> $exqty,'amount'=>$exprice]);
+            }
                 
             }
             return redirect()->back()->with('success', 'Item Added successfully.',json_encode(array(
@@ -105,16 +136,17 @@ class CashierController extends Controller
     public function move_to_cart()
     {
         //
+                
         $summ=DB::table('orderdetails')
-        ->select('*',DB::raw('SUM(quantity) as tqty,SUM(quantity*amount) as tamount'))
+        ->select('*',DB::raw('SUM(quantity) as tqty,SUM(amount) as tamount'))
         ->where('order_id','=','0')
         ->get();
         
         $order_detail=DB::table('orderdetails')
-              ->join('foods','foods.food_id','=','orderdetails.food_id')
+              ->leftjoin('foods','foods.food_id','=','orderdetails.food_id')
+              ->leftjoin('menu','menu.menu_id','=','orderdetails.menu_id')
               ->where('orderdetails.order_id','=','0')
               ->get();
-
 
               $cust = Customer::select('*')->get();
         return view('cashier.cart',compact('order_detail','summ','cust'));
@@ -178,6 +210,68 @@ class CashierController extends Controller
                  ->get();
                 //  dd($orders);
                  return view('cashier.order.all_orders',compact('orders'));
+    }
+    public function get_by_id(Request $request)
+    {
+        $inputArr=$request->all();
+
+        $orders['orderdata']=DB::table('order')
+        ->join('customers',function($join){
+           $join->on('customers.cust_id','=','order.customer_id');
+        })->leftJoin('orderdetails',function($join){
+           $join->on('orderdetails.order_id','=','order.order_id');     
+        })->where('order.order_id','=',$inputArr['edit_id'])
+        ->first();
+        
+        return response()->json($orders);
+        
+    }
+    public function invoice_details_show($id)
+    {
+        // $inputArr=$request->all();
+
+
+        $orders=DB::table('order')
+        ->select('*',DB::raw('orderdetails.quantity*foods.price as tamount'))
+        ->leftJoin('orderdetails',function($join){
+           $join->on('orderdetails.order_id','=','order.order_id');     
+        })->leftJoin('foods',function($join){
+            $join->on('foods.food_id','=','orderdetails.food_id');     
+         })
+         ->leftJoin('menu',function($join){
+            $join->on('menu.menu_id','=','orderdetails.menu_id');     
+         })
+         ->where('order.order_id','=',$id)
+        ->get();
+
+
+        $summ=DB::table('order')
+        ->select('*',DB::raw('SUM(quantity) as tqty,total_amount+30 as final_amount'))
+        ->leftjoin('orderdetails','orderdetails.order_id','=','order.order_id')
+        ->where('order.order_id','=',$id)
+        ->get();
+
+        $cust = Customer::select('*')
+        ->leftjoin('order','order.customer_id','=','customers.cust_id')
+        ->where('order.order_id','=',$id)
+        ->first();
+
+        return view('cashier.order.invoice',compact('orders','summ','cust'));
+
+    }
+
+    public function changestatus(Request $request)
+    {
+        $cat=DB::table('order')
+        ->where('order_id', $request->get('edit_id'))
+         ->update(['status' => $request -> estatus,]);
+
+        if($cat){
+        return redirect()->route('orders')->with('success', 'Order Updated successfully.');
+        }
+        else {
+        return redirect()->route('orders')->with('error', 'Failed! Order not Updated');
+        }
     }
 
     /**

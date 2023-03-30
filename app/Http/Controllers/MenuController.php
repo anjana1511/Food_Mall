@@ -62,8 +62,29 @@ class MenuController extends Controller
 
          ];
          $savedata=Menu_Item::create($data);
-         if($savedata)
+          if($savedata)
          {
+
+            $Menu=DB::table('menu_item')
+            ->select('menu_id','menu_item.food_id','foods.price',DB::raw('MAX(`item_id`) as item_id'))
+            ->join('foods','foods.food_id','=','menu_item.food_id')
+            ->where('menu_item.item_id','=',DB::raw('(select max(`item_id`) from menu_item)'))
+            ->first();
+
+            $menu_id=$Menu->menu_id;
+            $price=$Menu->price;
+            
+            $menu_price_details=Menu::select('menu_price')
+                       ->where('menu_id','=',$menu_id)
+                       ->first();
+             $menu_price=$menu_price_details->menu_price;
+                       
+             $addprice=$price+$menu_price;
+
+            $up=DB::table('menu')
+            ->where('menu_id','=',$menu_id)
+            ->update(['menu_price' => $addprice]);
+            
             return redirect()->back()->with('success','Item Add Successfully');
          }
          else
