@@ -15,7 +15,7 @@
                                 <li class="sidebar-item"><a href="{{ route('category') }}" class="sidebar-link"><i class="mdi mdi-file-pdf"></i><span class="hide-menu"> Generate Slip </span></a></li>
                             </ul>
                         </li> 
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('tables') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Table Reservasion</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('reservetion') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Reservasion</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('menu') }}" aria-expanded="false"><i class="mdi mdi-library-books"></i><span class="hide-menu">Reports</span></a></li>
                     </ul>
                 </nav>

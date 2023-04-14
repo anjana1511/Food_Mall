@@ -48,15 +48,13 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('user/category/delete',[App\Http\Controllers\CategoryController::class,'destroy'])->name('category.delete');
     Route::get('user/category/search',[App\Http\Controllers\CategoryController::class,'search'])->name('category.search');
 
-    //Tables Controller
-
-    Route::get('tables',[App\Http\Controllers\TablesController::class,'index'])->name('tables');
-    Route::post('user/tables',[App\Http\Controllers\TablesController::class,'store'])->name('tables.store');
-    Route::get('user/tables/edit',[App\Http\Controllers\TablesController::class,'edit'])->name('tables.edit');
-    Route::post('user/tables/update',[App\Http\Controllers\TablesController::class,'update'])->name('tables.update');
-    Route::post('user/tables/delete',[App\Http\Controllers\TablesController::class,'destroy'])->name('tables.delete');
-    Route::get('user/tables/search',[App\Http\Controllers\TablesController::class,'search'])->name('tables.search');
     
+    //ReservationController
+    
+    Route::get('reservation',[App\Http\Controllers\ReservationController::class,'index'])->name('reservation');
+    Route::post('user/reservation/delete',[App\Http\Controllers\ReservationController::class,'destroy'])->name('reservation.delete');
+
+
      //Menu Controller
     Route::get('menu',[App\Http\Controllers\MenuController::class,'index'])->name('menu');
     Route::get('user/getfood/{id}',[App\Http\Controllers\FoodController::class,'show'])->name('getfood');
@@ -74,6 +72,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('user/menu_item',[App\Http\Controllers\MenuController::class,'store_item'])->name('menu.store_item');
     Route::post('user/menu_item/delete',[App\Http\Controllers\MenuController::class,'destroy_item'])->name('menu.delete_item');
     
+
+
     
     // CashierController
     Route::get('/home', [App\Http\Controllers\CashierController::class, 'index'])->name('home');
@@ -88,6 +88,9 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::get('/home/order/invoice/show/{id}',[App\Http\Controllers\CashierController::class,'invoice_details_show'])->name('order.invoice_details_show');
 
+    // Reservetion
+    Route::get('/home/reservetion',[App\Http\Controllers\ReservationController::class,'create'])->name('reservetion');    
+    Route::post('home/reservetion/store',[App\Http\Controllers\ReservationController::class,'store'])->name('reservetion.store');
 
     //CustomerController
     Route::get('/home/customer',[App\Http\Controllers\CustomerController::class,'index'])->name('customer');

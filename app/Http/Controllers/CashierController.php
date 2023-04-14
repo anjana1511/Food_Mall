@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Food;
 use App\Models\Menu_Item;
 use App\Models\Customer;
+use App\Models\Tables;
 use Illuminate\Http\Request;
 use DB;
 class CashierController extends Controller
@@ -274,37 +275,12 @@ class CashierController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // public function table_res_index()
+    // {
+    //     // SomeModel::select(..)->whereNotIn('book_price', [100,200])->get();
+    //     $table=Tables::where('status','=','Available')->get();
+    //     $cust=Customer::get()->all();
+    //     return view('cashier.table_res',compact('table','cust'));
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

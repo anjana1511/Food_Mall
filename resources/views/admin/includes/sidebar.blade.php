@@ -16,7 +16,7 @@
                             </ul>
                         </li> 
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('menu') }}" aria-expanded="false"><i class="mdi mdi-clipboard-text"></i><span class="hide-menu">Manage Menu</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('tables') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Manage Tables</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('reservation') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Reservation</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
