@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <div id="main-wrapper">
+<div id="main-wrapper">
 
-        @include('admin.includes.sidebar')
+@include('admin.includes.sidebar')
 
         <div class="page-wrapper">
 
@@ -179,7 +179,6 @@
             <footer class="footer text-center">
                 All Rights Reserved by Khoz Informatics Pvt. Ltd. Designed and Developed by <a href="https://khozinfo.com/">Khozinfo</a>.
             </footer>
-        </div>
         </div>
     </div>
     @endsection

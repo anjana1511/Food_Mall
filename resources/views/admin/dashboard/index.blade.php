@@ -106,4 +106,5 @@
     <script src="{{asset('admin-panel/assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
     <script src="{{asset('admin-panel/dist/js/pages/calendar/cal-init.js')}}"></script>
 
+    <script src="{{asset('admin-panel/dist/js/jquery.ui.touch-punch-improved.js')}}"></script>
     @endsection

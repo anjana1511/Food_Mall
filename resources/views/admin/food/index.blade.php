@@ -226,11 +226,11 @@
 </footer>
 
 </div><!-- End Page wrapper  -->
-
+    </div>
 @endsection
 
 @section('js')
-
+    @include('admin.includes.scripts')
 <script  type="application/javascript">
    
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -301,5 +301,6 @@ $(document).on("click",".delete", function()
 
 });
     </script>
+    
     
 @endsection

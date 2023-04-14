@@ -16,7 +16,6 @@
                             </ul>
                         </li> 
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('reservetion') }}" aria-expanded="false"><i class="fas fa-box"></i><span class="hide-menu">Reservasion</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('menu') }}" aria-expanded="false"><i class="mdi mdi-library-books"></i><span class="hide-menu">Reports</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

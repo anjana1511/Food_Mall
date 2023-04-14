@@ -17,7 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'auth'], function (){
+Route::middleware(['auth', 'is_admin'])->group(function () {
+// Route::group(['middleware' => 'auth'], function (){
 
     Route::get('dashboard',[App\Http\Controllers\DashboardController::class,'index'])->name('dashboard'); 
     
@@ -73,8 +74,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('user/menu_item/delete',[App\Http\Controllers\MenuController::class,'destroy_item'])->name('menu.delete_item');
     
 
-
-    
+});
+    Route::group(['middleware' => 'auth'], function (){
     // CashierController
     Route::get('/home', [App\Http\Controllers\CashierController::class, 'index'])->name('home');
     
@@ -99,8 +100,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/home/customer/update',[App\Http\Controllers\CustomerController::class,'update'])->name('customer.update');
     Route::post('/home/customer/delete',[App\Http\Controllers\CustomerController::class,'destroy'])->name('customer.delete');
     Route::get('/home/customer/search',[App\Http\Controllers\CustomerController::class,'search'])->name('customer.search');
-});
 
+    });
 
 Auth::routes();
 //Route::get('admin/home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
