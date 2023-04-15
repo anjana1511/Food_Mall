@@ -1,64 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Restaurant Management 
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<H3>Introduction</h3>
 
-## About Laravel
+<p>This project was built using Laravel 8, this is a <b>Restaurant Management System</b>, we have two users <b>admin and cashier</b>.</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p><b>admin</b> who can log in add menus, categories,Foods,manage user roles and generate invoices</p>
+<p><b>cashier</b> who can log in and manage customer,manage order,generate invoice and Reservation</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<h3>Database Stucture<h3>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![image](https://user-images.githubusercontent.com/72943364/232207234-b966bfb8-0b7a-4025-9ff1-fd7a5ecfad9c.png)
 
-## Learning Laravel
+<h3>Screenshot</h3>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<h4>Admin Dashboard</h4>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![image](https://user-images.githubusercontent.com/72943364/232207415-010a4486-931c-4576-92a3-173ccfba3819.png)
 
-## Laravel Sponsors
+<h4>Manage User</h4>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![image](https://user-images.githubusercontent.com/72943364/232207628-5ae38514-b2b4-48cf-82a5-8e55c5ce15b0.png)
 
-### Premium Partners
+<h4>Manage Food</h4>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+![image](https://user-images.githubusercontent.com/72943364/232207720-eafe750d-cdba-4e8b-9937-23c885db45ef.png)
 
-## Contributing
+![image](https://user-images.githubusercontent.com/72943364/232207791-d17c8fa2-b4e6-45eb-b3b0-775f684fd7a8.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<h4>Manage Category</h4>
 
-## Code of Conduct
+![Screenshot (141)](https://user-images.githubusercontent.com/72943364/232207864-5cac1c40-7507-4526-b69f-242b24cdd053.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+![Screenshot (142)](https://user-images.githubusercontent.com/72943364/232207870-451d91c0-abf7-4bd0-9532-a329db9dbd1e.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+<h4>Manage Menu</h4>
 
-## License
+![Screenshot (143)](https://user-images.githubusercontent.com/72943364/232207920-e09c391c-86a8-4d3b-9086-0ccd1cf6581e.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<h4>Menu Item</h4>
+
+![Screenshot (144)](https://user-images.githubusercontent.com/72943364/232207931-2eaac58f-0c3c-484f-b67c-41d282bda54d.png)
+
+
+![Screenshot (145)](https://user-images.githubusercontent.com/72943364/232207962-7158791a-3f46-4203-9c6f-0cdada8a6206.png)
+
+<h4>Reservation List</h4>
+
+
+![Screenshot (147)](https://user-images.githubusercontent.com/72943364/232208092-3a27ab13-a7b4-495e-8325-934cffecf538.png)
+
+
+<h4>Cashier Home</h4>
+
+![Screenshot (148)](https://user-images.githubusercontent.com/72943364/232208129-d946edc8-a28a-4651-b86d-a60a8ac0f7f5.png)
+
+<h4>Add Item to Cart</h4>
+
+![Screenshot (149)](https://user-images.githubusercontent.com/72943364/232208137-d9bd19f3-92f7-40ee-add4-04f0d61b62f8.png)
+
+
+
+![Screenshot (150)](https://user-images.githubusercontent.com/72943364/232208191-3c64aba6-047e-4d0a-9158-0ca51edd022c.png)
+
+<h4>Order Details</h4>
+
+
+![Screenshot (151)](https://user-images.githubusercontent.com/72943364/232208217-086d3320-58dc-4b74-8b8f-10b224ac666b.png)
+
+<h4>Order Status</h4>
+
+![Screenshot (154)](https://user-images.githubusercontent.com/72943364/232208247-93eb2b80-ac1e-4f17-881f-b0a3b2d463df.png)
+
+![Screenshot (156)](https://user-images.githubusercontent.com/72943364/232208278-ebc1f613-b866-48f1-8c18-c49cff5195bf.png)
+
+<h4>Invoice</h4>
+
+![Screenshot (157)](https://user-images.githubusercontent.com/72943364/232208315-c756116f-f42a-40ed-9620-a96bbc7262a2.png)
+
+<h4>Reservation</h4>
+
+![Screenshot (158)](https://user-images.githubusercontent.com/72943364/232208342-cb488218-ca2f-4e1e-bd22-de63940a0696.png)
+
+
