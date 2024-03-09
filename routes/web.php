@@ -79,6 +79,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     // CashierController
     Route::get('/home', [App\Http\Controllers\CashierController::class, 'index'])->name('home');
     
+    Route::get('user/getitem/{id}',[App\Http\Controllers\MenuController::class,'show'])->name('getitem');
+    Route::get('user/showfood/{id}',[App\Http\Controllers\FoodController::class,'show_food'])->name('show_food');
+
     //add_to_cart
     Route::post('/home/add_to_cart',[App\Http\Controllers\CashierController::class,'add_to_cart'])->name('add_to_cart');
     Route::get('/home/move_to_cart',[App\Http\Controllers\CashierController::class,'move_to_cart'])->name('move_to_cart');

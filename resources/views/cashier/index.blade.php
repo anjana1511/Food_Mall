@@ -31,6 +31,7 @@
                                  <div class="form-group row">
                                         <div class="col-md-9">
                                             <select class="form-control" id="menu_id" name="menu_id">
+                                                <option value="">Select</option>
                                                 @foreach($menu as $data)
                                                     <option value="{{ $data->menu_id }}">{{ $data->menu_name }}</option>
                                                 @endforeach
@@ -57,6 +58,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-9">
                                         <select class="form-control" id="cat_id" name="cat_id">
+                                                <option value="">Select</option>
                                                 @foreach($all_category as $data1)
                                                     <option value="{{ $data1->cat_id }}">{{ $data1->cat_name }}</option>
                                                 @endforeach
@@ -143,7 +145,8 @@
 
                var url = "{{ route('getitem', ":menuID") }}";
                 url = url.replace(':menuID', menuID);
-
+               
+                    //  console.log(url);
                if(menuID)
                {
                   jQuery.ajax({
@@ -153,11 +156,11 @@
                      success:function(data)
                      {
                         console.log(data);
-
                         var len = 0;
            $('#menu_table tbody').empty(); // Empty <tbody>
            if(data != null){
              len = data.length;
+
            }
                 if(len > 0){
 

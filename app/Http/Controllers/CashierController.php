@@ -31,8 +31,7 @@ class CashierController extends Controller
         ->get();
         $menu=$all_menu->unique('menu_id');
         $all_category=$all_cat->unique('cat_id');
-        // dd($all_category);
-      
+        
 
         return view('cashier.index',compact('menu','all_category'));
     }
