@@ -8,6 +8,11 @@
                     <span class="db"><img src="{{asset('admin-panel/assets/images/logo.png')}}" alt="logo" /></span>
                 </div>
                 <!-- Form -->
+                @if(Session::has('error'))
+            <div class="alert alert-danger">
+                        {{ Session::get('error')}}
+            </div>
+                        @endif
                 {{--<form class="form-horizontal m-t-20" id="loginform" action="index.html">--}}
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
